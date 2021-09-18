@@ -1,55 +1,15 @@
 ﻿using System;
-using System.IO.Ports;
+using System.Runtime.InteropServices;
 
-namespace project
+class Example
 {
-    class project
+    // Use DllImport to import the Win32 MessageBox function.
+    [DllImport("OWire_Module_x64.dll", CharSet = CharSet.Unicode)]
+    public static extern int OW_OpenPort();
+    
+    static void Main()
     {
-        static void Main()
-        {
-            SerialPort port;
-
-            // получаем список доступных портов
-            string[] ports = SerialPort.GetPortNames();
-
-            Console.WriteLine("Выберите порт:");
-
-            // выводим список портов
-            for (int i = 0; i < ports.Length; i++)
-            {
-                Console
-                    .WriteLine("[" + i.ToString() + "] " + ports[i].ToString());
-            }
-
-            port = new SerialPort();
-
-            // читаем номер из консоли
-            string n = Console.ReadLine();
-            int num = int.Parse(n);
-
-            try
-            {
-                // настройки порта
-                port.PortName = ports[num];
-                port.BaudRate = 9600;
-                port.DataBits = 8;
-                port.Parity = System.IO.Ports.Parity.None;
-                port.StopBits = System.IO.Ports.StopBits.One;
-                port.ReadTimeout = 500;
-                port.WriteTimeout = 500;
-                port.Open();
-            }
-            catch (Exception e)
-            {
-                Console
-                    .WriteLine("ERROR: невозможно открыть порт:" +
-                    e.ToString());
-                return;
-            }
-
-            port.Write("Hello from C#");
-
-            port.Close();
-        }
+        // Call the MessageBox function using platform invoke.
+        Console.WriteLine(OW_OpenPort());
     }
 }
